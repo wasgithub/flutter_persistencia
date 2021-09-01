@@ -1,9 +1,15 @@
-import 'package:fluter_persistencia/screens/contact_form.dart';
+import 'package:fluter_persistencia/database/app_database.dart';
 import 'package:fluter_persistencia/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import 'models/contact.dart';
+
 void main() {
   runApp(BytebankApp());
+  save(Contact(10, 'alexandre', 1000)).then((id) {
+    findAll().then((contacts) => debugPrint(contacts.toString()));
+  });
+
 }
 
 class BytebankApp extends StatelessWidget {
@@ -22,5 +28,3 @@ class BytebankApp extends StatelessWidget {
     );
   }
 }
-
-
