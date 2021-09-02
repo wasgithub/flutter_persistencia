@@ -1,4 +1,4 @@
-import 'package:fluter_persistencia/database/app_database.dart';
+import 'package:fluter_persistencia/database/dao/contact_dao.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:fluter_persistencia/screens/contact_form.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,8 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
+  final ContactDao _dao = ContactDao();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +19,7 @@ class _ContactsListState extends State<ContactsList> {
         ),
         body: FutureBuilder(
           future:
-              Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+              Future.delayed(Duration(seconds: 1)).then((value) => _dao.findAll()),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -51,12 +53,13 @@ class _ContactsListState extends State<ContactsList> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ContactForm(),
-            ))
-            .then(
-                (value) => setState(() {}),
-              );
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+                  builder: (context) => ContactForm(),
+                ))
+                .then(
+                  (value) => setState(() {}),
+                );
           },
         ));
   }

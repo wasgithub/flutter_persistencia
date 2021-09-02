@@ -1,4 +1,5 @@
 import 'package:fluter_persistencia/database/app_database.dart';
+import 'package:fluter_persistencia/database/dao/contact_dao.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class _ContactFormState extends State<ContactForm> {
 
   final TextEditingController _accountNumberController =
       TextEditingController();
+  final ContactDao _dao = ContactDao();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class _ContactFormState extends State<ContactForm> {
                     final int accountNumber =
                         int.parse(_accountNumberController.text);
                     final Contact newContact = Contact(0, name, accountNumber);
-                    save(newContact)
+                    _dao.save(newContact)
                         .then((id) => Navigator.pop(context, newContact));
                   },
                   child: Text('Criar'),
