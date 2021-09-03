@@ -47,14 +47,9 @@ class _ContactFormState extends State<ContactForm> {
               padding: const EdgeInsets.only(top: 16.0),
               child: SizedBox(
                 width: double.maxFinite,
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
-                    final String name = _nameController.text;
-                    final int accountNumber =
-                        int.parse(_accountNumberController.text);
-                    final Contact newContact = Contact(0, name, accountNumber);
-                    _dao.save(newContact)
-                        .then((id) => Navigator.pop(context, newContact));
+                    _criarTransferencia(context);
                   },
                   child: Text('Criar'),
                 ),
@@ -64,5 +59,14 @@ class _ContactFormState extends State<ContactForm> {
         ),
       ),
     );
+  }
+
+  void _criarTransferencia(BuildContext context) {
+           final String name = _nameController.text;
+    final int accountNumber =
+        int.parse(_accountNumberController.text);
+    final Contact newContact = Contact(0, name, accountNumber);
+    _dao.save(newContact)
+        .then((id) => Navigator.pop(context, newContact));
   }
 }
