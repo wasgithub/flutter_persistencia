@@ -1,4 +1,5 @@
 import 'package:fluter_persistencia/screens/contacts_list.dart';
+import 'package:fluter_persistencia/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -14,22 +15,52 @@ class Dashboard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Image.asset('images/bytebank_logo.png'),
             ),
-            Row(
-              children: [
-                _FeatureItem(name: 'Transferencia', icon: Icons.monetization_on,),
-                _FeatureItem(name: 'Transaction Feed', icon: Icons.description,),
-              ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _FeatureItem(
+                    name: 'Transferencia',
+                    icon: Icons.monetization_on,
+                    onClick: () => _showContactsList(context),
+                  ),
+                  _FeatureItem(
+                    name: 'Transaction Feed',
+                    icon: Icons.description,
+                    onClick: () => _showTransactionsList(context),
+                  ),
+                  _FeatureItem(
+                    name: 'Scrooll lateral..',
+                    icon: Icons.monetization_on,
+                    onClick: () => print(
+                        'scroll lateral utilizando SingleChildScrollView'),
+                  ),
+                ],
+              ),
             ),
           ]),
     );
+  }
+
+  void _showContactsList(context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => ContactsList(),
+    ));
+  }
+
+  void _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => TransactionsList(),
+    ));
   }
 }
 
 class _FeatureItem extends StatelessWidget {
   final String? name;
   final IconData? icon;
+  final Function onClick;
 
-  const _FeatureItem({this.name, this.icon});
+  const _FeatureItem({this.name, this.icon, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +69,7 @@ class _FeatureItem extends StatelessWidget {
       child: Material(
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => ContactsList()));
-          },
+          onTap: () => onClick(),
           child: Container(
             padding: EdgeInsets.all(8.0),
             height: 100,
