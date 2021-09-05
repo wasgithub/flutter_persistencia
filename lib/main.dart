@@ -1,8 +1,10 @@
+import 'package:fluter_persistencia/http/webclient.dart';
 import 'package:fluter_persistencia/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(BytebankApp());
+  findAll();
   // save(Contact(10, 'alexandre', 1000)).then((id) {
   //   findAll().then((contacts) => debugPrint(contacts.toString()));
   // });

@@ -1,4 +1,3 @@
-import 'package:fluter_persistencia/database/app_database.dart';
 import 'package:fluter_persistencia/database/dao/contact_dao.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:flutter/material.dart';
