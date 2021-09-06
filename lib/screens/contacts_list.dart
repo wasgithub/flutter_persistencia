@@ -1,3 +1,4 @@
+import 'package:fluter_persistencia/components/progress.dart';
 import 'package:fluter_persistencia/database/dao/contact_dao.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:fluter_persistencia/screens/contact_form.dart';
@@ -18,23 +19,14 @@ class _ContactsListState extends State<ContactsList> {
           title: Text('Transferencia'),
         ),
         body: FutureBuilder(
-          future:
-              Future.delayed(Duration(seconds: 1)).then((value) => _dao.findAll()),
+          future: Future.delayed(Duration(seconds: 1))
+              .then((value) => _dao.findAll()),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 break;
               case ConnectionState.waiting:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('Loading'),
-                    ],
-                  ),
-                );
+                return Progress();
               case ConnectionState.active:
                 break;
               case ConnectionState.done:

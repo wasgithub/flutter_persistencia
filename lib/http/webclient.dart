@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:fluter_persistencia/models/contact.dart';
+import 'package:fluter_persistencia/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
@@ -18,10 +22,24 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
-void findAll() async {
+Future<List<Transaction>> findAll() async {
   final Client client = InterceptedClient.build(
     interceptors: [LoggingInterceptor()],
   );
   final Response response = await client.get(Uri.parse(urlTransactions));
-  print(response.body);
+  final List<dynamic> jsonDecodedJson = jsonDecode(response.body);
+  final List<Transaction> transactions = [];
+
+  for (Map<String, dynamic> transactionJson in jsonDecodedJson) {
+    final Map<String, dynamic> contactJson = transactionJson['contact'];
+    final Transaction transaction = Transaction(
+        transactionJson['value'],
+        Contact(
+          0,
+          contactJson['name'],
+          contactJson['accountNumber'],
+        ));
+    transactions.add(transaction);
+  }
+  return transactions;
 }
