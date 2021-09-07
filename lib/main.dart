@@ -2,6 +2,8 @@
 import 'package:fluter_persistencia/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
+import 'components/transaction_auth_dialog.dart';
+
 void main() {
   runApp(BytebankApp());
   // save(Transaction(200, Contact(0, 'Washington', 2000)));
@@ -23,7 +25,7 @@ class BytebankApp extends StatelessWidget {
             buttonColor: Colors.blueAccent[700],
             textTheme: ButtonTextTheme.primary,
           )),
-      home: Dashboard(),
+      home: TransactionAuthDialog(),
     );
   }
 }
