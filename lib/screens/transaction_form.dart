@@ -1,3 +1,5 @@
+import 'package:fluter_persistencia/components/response_dialog.dart';
+import 'package:fluter_persistencia/components/transaction_auth_dialog.dart';
 import 'package:fluter_persistencia/http/webclients/transaction_webclient.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:fluter_persistencia/models/transaction.dart';
@@ -64,13 +66,15 @@ class _TransactionFormState extends State<TransactionForm> {
                       final transactionCreated =
                           Transaction(value, widget.contact);
                       print('Transactioncreated $transactionCreated');
-                      _webclient.save(transactionCreated).then((transaction) {
-                        if (transaction != null) {
-                          Navigator.pop(context);
-                        }
-                      }).onError((error, stackTrace) {
-                        print('deuu erro $error');
-                      });
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            return TransactionAuthDialog(
+                              onConfirm: (String password) {
+                                _save(transactionCreated, password, context);
+                              },
+                            );
+                          });
                     },
                   ),
                 ),
@@ -80,5 +84,27 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
+  }
+
+  void _save(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    final Transaction transaction =
+        await _webclient.save(transactionCreated, password).catchError((e) {
+      print('Deuuuu errooo $e');
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog(e.message);
+          });
+    }, test: (e) => e is Exception);
+
+    if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contexDialog) {
+            return SuccessDialog('successfull transaction');
+          });
+      Navigator.pop(context);
+    }
   }
 }
