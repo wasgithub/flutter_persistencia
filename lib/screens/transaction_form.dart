@@ -1,4 +1,4 @@
-import 'package:fluter_persistencia/http/webclient.dart';
+import 'package:fluter_persistencia/http/webclients/transaction_webclient.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:fluter_persistencia/models/transaction.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +14,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
+  final TransactionWebclient _webclient = TransactionWebclient();
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +63,13 @@ class _TransactionFormState extends State<TransactionForm> {
                       final double value = double.parse(_valueController.text);
                       final transactionCreated =
                           Transaction(value, widget.contact);
-                      save(transactionCreated).then((transaction) {
+                      print('Transactioncreated $transactionCreated');
+                      _webclient.save(transactionCreated).then((transaction) {
                         if (transaction != null) {
                           Navigator.pop(context);
                         }
+                      }).onError((error, stackTrace) {
+                        print('deuu erro $error');
                       });
                     },
                   ),
