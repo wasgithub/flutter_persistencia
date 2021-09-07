@@ -22,22 +22,17 @@ class TransactionWebclient {
           'password': '1000',
         },
         body: transactionJson);
-    Transaction transact = _toTransaction(response);
+    Transaction transact = Transaction.fromJson(jsonDecode(response.body));
     print("transacao $transact");
     return transact;
   }
 
   List<Transaction> _toTransactions(Response response) {
-    final List<dynamic> jsonDecodedJson = jsonDecode(response.body);
-    final List<Transaction> transactions = [];
-    for (Map<String, dynamic> transactionJson in jsonDecodedJson) {
-      transactions.add(Transaction.fromJson(transactionJson));
-    }
-    return transactions;
-  }
-
-  Transaction _toTransaction(Response response) {
-    Map<String, dynamic> json = jsonDecode(response.body);
-    return Transaction.fromJson(json);
+  final List<dynamic> decodedJson = jsonDecode(response.body);
+    return decodedJson.map((dynamic json) => Transaction.fromJson(json)).toList();
+    // final List<Transaction> transactions = [];
+    // for (Map<String, dynamic> transactionJson in jsonDecodedJson) {
+    //   transactions.add(Transaction.fromJson(transactionJson));
+    // }
   }
 }
