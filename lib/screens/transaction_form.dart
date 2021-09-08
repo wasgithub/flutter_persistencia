@@ -90,30 +90,44 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
-    final Transaction transaction =
-        await _webclient.save(transactionCreated, password).catchError((e) {
-      print('Deuuuu errooo $e');
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(e.message);
-          });
-    }, test: (e) => e is HttpException)
-    .catchError((e) {
-      showDialog(
-        context: context,
-        builder: (contexDialog) {
-          return FailureDialog('timeout submitting the transaction');
-        });
-    }, test: (e) => e is TimeoutException);
+    Transaction transaction = await _send(
+      transactionCreated,
+      password,
+      context,
+    );
 
+    _showSuccessfulMessage(transaction, context);
+  }
+
+  Future<void> _showSuccessfulMessage(Transaction transaction, BuildContext context) async {
     if (transaction != null) {
       await showDialog(
           context: context,
           builder: (contexDialog) {
-            return FailureDialog('successfull transaction');
+            return SuccessDialog('successfull transaction');
           });
       Navigator.pop(context);
     }
+  }
+
+  Future<Transaction> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    final Transaction transaction =
+        await _webclient.save(transactionCreated, password).catchError((e) {
+_showFailureMessage(context, message: e.message);
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context, message: 'timeout submitting the transaction');
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      _showFailureMessage(context);
+    });
+    return transaction;
+  }
+
+  void _showFailureMessage(BuildContext context, {String message = 'unknown error'}) {
+    showDialog(
+        context: context,
+        builder: (contexDialog) {
+          return FailureDialog(message);
+        });
   }
 }
