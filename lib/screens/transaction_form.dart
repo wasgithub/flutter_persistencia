@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluter_persistencia/components/response_dialog.dart';
 import 'package:fluter_persistencia/components/transaction_auth_dialog.dart';
 import 'package:fluter_persistencia/http/webclients/transaction_webclient.dart';
@@ -96,13 +98,20 @@ class _TransactionFormState extends State<TransactionForm> {
           builder: (contextDialog) {
             return FailureDialog(e.message);
           });
-    }, test: (e) => e is Exception);
+    }, test: (e) => e is HttpException)
+    .catchError((e) {
+      showDialog(
+        context: context,
+        builder: (contexDialog) {
+          return FailureDialog('timeout submitting the transaction');
+        });
+    }, test: (e) => e is TimeoutException);
 
     if (transaction != null) {
       await showDialog(
           context: context,
           builder: (contexDialog) {
-            return SuccessDialog('successfull transaction');
+            return FailureDialog('successfull transaction');
           });
       Navigator.pop(context);
     }
