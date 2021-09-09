@@ -1,9 +1,9 @@
-
 import 'package:fluter_persistencia/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(BytebankApp());
+  // print(Uuid().v4());
   // save(Transaction(200, Contact(0, 'Washington', 2000)));
   // findAll().then((transactions) => print('new transactions ${transactions} '));
   // save(Contact(10, 'alexandre', 1000)).then((id) {

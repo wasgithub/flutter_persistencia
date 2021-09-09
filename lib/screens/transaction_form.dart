@@ -6,6 +6,7 @@ import 'package:fluter_persistencia/http/webclients/transaction_webclient.dart';
 import 'package:fluter_persistencia/models/contact.dart';
 import 'package:fluter_persistencia/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class TransactionForm extends StatefulWidget {
   final Contact contact;
@@ -19,9 +20,11 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebclient _webclient = TransactionWebclient();
+  final String transactionId = Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
+    print('transaction form id $transactionId');
     return Scaffold(
       appBar: AppBar(
         title: Text('New transaction'),
@@ -66,7 +69,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     onPressed: () {
                       final double value = double.parse(_valueController.text);
                       final transactionCreated =
-                          Transaction(value, widget.contact);
+                          Transaction(transactionId, value, widget.contact);
                       print('Transactioncreated $transactionCreated');
                       showDialog(
                           context: context,
@@ -99,7 +102,8 @@ class _TransactionFormState extends State<TransactionForm> {
     _showSuccessfulMessage(transaction, context);
   }
 
-  Future<void> _showSuccessfulMessage(Transaction transaction, BuildContext context) async {
+  Future<void> _showSuccessfulMessage(
+      Transaction transaction, BuildContext context) async {
     if (transaction != null) {
       await showDialog(
           context: context,
@@ -114,16 +118,18 @@ class _TransactionFormState extends State<TransactionForm> {
       BuildContext context) async {
     final Transaction transaction =
         await _webclient.save(transactionCreated, password).catchError((e) {
-_showFailureMessage(context, message: e.message);
+      _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {
-      _showFailureMessage(context, message: 'timeout submitting the transaction');
+      _showFailureMessage(context,
+          message: 'timeout submitting the transaction');
     }, test: (e) => e is TimeoutException).catchError((e) {
       _showFailureMessage(context);
     });
     return transaction;
   }
 
-  void _showFailureMessage(BuildContext context, {String message = 'unknown error'}) {
+  void _showFailureMessage(BuildContext context,
+      {String message = 'unknown error'}) {
     showDialog(
         context: context,
         builder: (contexDialog) {
