@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fluter_persistencia/screens/contacts_list.dart';
 import 'package:fluter_persistencia/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,8 @@ class Dashboard extends StatelessWidget {
   }
 
   void _showContactsList(context) {
+    // FirebaseCrashlytics.instance.crash();
+    
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ContactsList(),
     ));
