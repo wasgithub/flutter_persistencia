@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fluter_persistencia/components/progress.dart';
 import 'package:fluter_persistencia/components/response_dialog.dart';
 import 'package:fluter_persistencia/components/transaction_auth_dialog.dart';
 import 'package:fluter_persistencia/http/webclients/transaction_webclient.dart';
@@ -21,6 +22,7 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebclient _webclient = TransactionWebclient();
   final String transactionId = Uuid().v4();
+  bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,13 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(message: 'Sending...'),
+                ),
+                visible: _sending,
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
@@ -93,12 +102,12 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
+
     Transaction transaction = await _send(
       transactionCreated,
       password,
       context,
     );
-
     _showSuccessfulMessage(transaction, context);
   }
 
@@ -116,6 +125,9 @@ class _TransactionFormState extends State<TransactionForm> {
 
   Future<Transaction> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
+    setState(() {
+      _sending = true;
+    });        
     final Transaction transaction =
         await _webclient.save(transactionCreated, password).catchError((e) {
       _showFailureMessage(context, message: e.message);
@@ -124,6 +136,10 @@ class _TransactionFormState extends State<TransactionForm> {
           message: 'timeout submitting the transaction');
     }, test: (e) => e is TimeoutException).catchError((e) {
       _showFailureMessage(context);
+    }).whenComplete(() {
+      setState(() {
+        _sending = false;
+      });      
     });
     return transaction;
   }
