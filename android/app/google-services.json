@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1087991388033",
+    "project_id": "spike-pp",
+    "storage_bucket": "spike-pp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087991388033:android:cf54a8ab948de5e983fa80",
+        "android_client_info": {
+          "package_name": "com.example.fluter_persistencia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087991388033-evos8a6t8cc1iuc9cjr0b46ktmo9vp3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBfIbnuATDlW2JtxVRUAJoqpVbwm2zUbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087991388033-evos8a6t8cc1iuc9cjr0b46ktmo9vp3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
