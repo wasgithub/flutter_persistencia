@@ -4,6 +4,7 @@ import 'package:fluter_persistencia/screens/dashboard/balance_card.dart';
 import 'package:fluter_persistencia/screens/contacts_list.dart';
 import 'package:fluter_persistencia/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -14,10 +15,21 @@ class Dashboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: BalanceCard(balance: Balance(12.00),)
-            ),
+            Align(alignment: Alignment.topCenter, child: BalanceCard()),
+            Consumer<Balance>(builder: (context, balance, child) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      balance.add(10);
+                    },
+                    child: Text('receive deposit'),
+                  ),
+                ),
+              );
+            }),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Image.asset('images/pp.png'),
@@ -27,7 +39,7 @@ class Dashboard extends StatelessWidget {
               child: Row(
                 children: [
                   _FeatureItem(
-                    name: 'Transferencia',
+                    name: 'Transfer',
                     icon: Icons.monetization_on,
                     onClick: () => _showContactsList(context),
                   ),
@@ -51,7 +63,7 @@ class Dashboard extends StatelessWidget {
 
   void _showContactsList(context) {
     // FirebaseCrashlytics.instance.crash();
-    
+
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ContactsList(),
     ));
