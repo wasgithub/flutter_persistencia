@@ -10,6 +10,8 @@ import 'package:fluter_persistencia/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import 'dashboard/balance_card.dart';
+
 class TransactionForm extends StatefulWidget {
   final Contact contact;
 
@@ -38,12 +40,20 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Center(child: BalanceCard()),
               Visibility(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Progress(message: 'Sending...'),
                 ),
                 visible: _sending,
+              ),
+              Text(
+                'to: ',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Theme.of(context).primaryColor
+                ),
               ),
               Text(
                 widget.contact.name,
@@ -76,6 +86,7 @@ class _TransactionFormState extends State<TransactionForm> {
                   width: double.maxFinite,
                   child: ElevatedButton(
                     child: Text('Transfer'),
+                    style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
                     onPressed: () {
                       final double value = double.parse(_valueController.text);
                       final transactionCreated =

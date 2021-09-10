@@ -22,6 +22,7 @@ class Dashboard extends StatelessWidget {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
                     onPressed: () {
                       balance.add(10);
                     },

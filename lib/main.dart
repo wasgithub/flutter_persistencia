@@ -3,7 +3,6 @@ import 'package:fluter_persistencia/models/balance.dart';
 import 'package:fluter_persistencia/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
