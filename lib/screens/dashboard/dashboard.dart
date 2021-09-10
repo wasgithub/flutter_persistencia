@@ -1,4 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:fluter_persistencia/models/balance.dart';
+import 'package:fluter_persistencia/screens/dashboard/balance_card.dart';
 import 'package:fluter_persistencia/screens/contacts_list.dart';
 import 'package:fluter_persistencia/screens/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +14,13 @@ class Dashboard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Align(
+              alignment: Alignment.topCenter,
+              child: BalanceCard(balance: Balance(12.00),)
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.asset('images/bytebank_logo.png'),
+              child: Image.asset('images/pp.png'),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
