@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:fluter_persistencia/components/progress.dart';
 import 'package:fluter_persistencia/components/response_dialog.dart';
 import 'package:fluter_persistencia/components/transaction_auth_dialog.dart';
@@ -102,7 +103,6 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(Transaction transactionCreated, String password,
       BuildContext context) async {
-
     Transaction transaction = await _send(
       transactionCreated,
       password,
@@ -127,19 +127,22 @@ class _TransactionFormState extends State<TransactionForm> {
       BuildContext context) async {
     setState(() {
       _sending = true;
-    });        
+    });
     final Transaction transaction =
         await _webclient.save(transactionCreated, password).catchError((e) {
+      FirebaseCrashlytics.instance.recordError(e.message, null);
       _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {
+      FirebaseCrashlytics.instance.recordError(e.message, null);
       _showFailureMessage(context,
           message: 'timeout submitting the transaction');
     }, test: (e) => e is TimeoutException).catchError((e) {
+      FirebaseCrashlytics.instance.recordError(e.message, null);
       _showFailureMessage(context);
     }).whenComplete(() {
       setState(() {
         _sending = false;
-      });      
+      });
     });
     return transaction;
   }
