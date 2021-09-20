@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fluter_persistencia/components/theme.dart';
 import 'package:fluter_persistencia/models/balance.dart';
 import 'package:fluter_persistencia/screens/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,7 @@ class BytebankApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Colors.purple[900],
-          accentColor: Colors.pink[600],
-          buttonTheme: ButtonThemeData(
-            buttonColor: Colors.blueAccent[700],
-            textTheme: ButtonTextTheme.primary,
-          )),
+      theme: bytebankTheme,
       home: Dashboard(),
     );
   }
